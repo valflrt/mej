@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demoniac Folds</title>
+    <link rel="stylesheet" href="./assets/index.css" />
+
+    <!--<script>
+      MathJax = {
+        tex: {
+          inlineMath: [["$", "$"]],
+          displayMath: [["$$", "$$"]],
+        },
+      };
+    </script>
+    <script
+      type="text/javascript"
+      id="mathjax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <script>
+      document.getElementById("mathjax-script").addEventListener("load", () => {
+        document.body.classList.remove("loading");
+      });
+    </script>-->
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css"
+      integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js"
+      integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="dark">
+    <div class="content">
+      <h1>Demoniac Folds</h1>
+
+      <section class="main">
+        <p>
+          Un problème de maths: On plie une bande de papier toujours dans le
+          même sens, un certain nombre de fois. On déplie ensuite le pliage
+          obtenu et met les angles à 90° dans le sens où ils ont été pliés. Une
+          figure est obtenue.
+        </p>
+
+        On cherche:
+
+        <ul>
+          <li>Le nombre de segments de la figure obtenue</li>
+          <li>Les dimensions de la grille sur laquelle la figure obtenue</li>
+        </ul>
+
+        <h2>Recherches</h2>
+
+        <section>
+          <h3>Nombre de segments de la figure obtenue</h3>
+
+          <section>
+            <p>
+              Pour chaque nouveau pliage, on plie chaque segment en deux. On a
+              donc: <span class="math">2^n</span> segments.
+            </p>
+          </section>
+
+          <h3>Taille de la figure</h3>
+
+          <p>
+            Nous avons d'abord remarqué que la figure à un rang donné
+            <span class="math">n</span> est composée de deux fois la figure au
+            rang précédent <span class="math">n - 1</span> avec un angle de 90°
+            à l'endroit ou les deux se rejoignent...
+          </p>
+
+          <p>
+            Nous avons ensuite choisi de représenter les angles de la figure
+            sous la forme d'une liste de 0 et de 1 (notée
+            <span class="prog">A(n)</span> avec n le rang): 0 correspondant à un
+            angle dans un sens et 1 à un angle dans l'autre sens. Nous avons
+            découvert que la liste d'angle à un rang
+            <span class="math">n</span> est:
+            <span class="prog">A(n - 1) + 0 + A(n - 1)</span>
+          </p>
+
+          <p>
+            Les résultats obtenus (en partant de
+            <span class="prog">n = 1</span>) sont:
+            <span class="prog">[0]</span>, <span class="prog">[1, 0, 0]</span>,
+            <span class="prog">[1, 1, 0, 0, 1, 0, 0]</span>,
+            <span class="prog"
+              >[1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0]</span
+            >
+            etc...
+          </p>
+
+          <p>
+            Nous avons donc créé
+            <a
+              href="https://github.com/valflrt/demoniac-folds/blob/main/simulation.py"
+              >un programme</a
+            >
+            permettant de trouver la figure à un rang
+            <span class="math">n</span>. Voici les figures obtenues pour
+            certains rangs donnés:
+          </p>
+
+          <div class="container">
+            <div class="box">
+              <img src="./assets/images/rang_1.png" alt="rang 1" />
+              <p>rang 1</p>
+            </div>
+
+            <div class="box">
+              <img src="./assets/images/rang_2.png" alt="rang 2" />
+              <p>rang 2</p>
+            </div>
+
+            <div class="box">
+              <img src="./assets/images/rang_3.png" alt="rang 3" />
+              <p>rang 3</p>
+            </div>
+
+            <div class="box">
+              <img src="./assets/images/rang_4.png" alt="rang 4" />
+              <p>rang 4</p>
+            </div>
+
+            <div class="box">
+              <img src="./assets/images/rang_5.png" alt="rang 5" />
+              <p>rang 5</p>
+            </div>
+
+            <div class="box">
+              <img src="./assets/images/rang_12.png" alt="rang 12" />
+              <p>rang 12</p>
+            </div>
+          </div>
+
+          <p>
+            Le point bleu représente les points de jonction à 90° entre les deux
+            figures au rang <span class="math">n - 1</span> qui forme la figure
+            au rang <span class="math">n</span>.
+          </p>
+
+          <p>
+            La figure semble former une fractale de plus en plus précise lorsque
+            l'on augmente le nombre de pliages <span class="math">n</span>
+          </p>
+        </section>
+      </section>
+    </div>
+
+    <script>
+      function detectMobile() {
+        if (window.innerWidth < 800) {
+          document.body.classList.add("mobile");
+        } else {
+          document.body.classList.remove("mobile");
+        }
+      }
+      detectMobile();
+      window.addEventListener("resize", detectMobile);
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let inlineMathElements = document.querySelectorAll("span.math");
+        inlineMathElements.forEach((element) => {
+          katex.render(element.textContent, element, {
+            throwOnError: false,
+            displayMode: false,
+          });
+        });
+        let displayModeMathElements = document.querySelectorAll("div.math");
+        displayModeMathElements.forEach((element) => {
+          katex.render(element.textContent, element, {
+            throwOnError: false,
+            displayMode: true,
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
