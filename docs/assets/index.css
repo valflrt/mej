@@ -12,6 +12,14 @@ body {
   box-sizing: border-box;
 }
 
+::selection {
+  background-color: rgba(160, 160, 250, 0.25);
+}
+
+::-moz-selection {
+  background-color: rgba(160, 160, 250, 0.25);
+}
+
 body {
   font-family: "Open Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
