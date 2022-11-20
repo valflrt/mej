@@ -66,33 +66,38 @@
 
           <section>
             <p>
-              Pour chaque nouveau pliage, on plie chaque segment en deux. On a
-              donc: <span class="math">2^n</span> segments.
+              Pour chaque nouveau pliage, on plie chaque segment en deux. Le
+              nombre de segment est donc doublé à chaque pliage, il y a donc:
+              <span class="math">2^n</span> segments.
             </p>
           </section>
 
           <h3>Taille de la figure</h3>
 
           <p>
-            Nous avons d'abord remarqué que la figure à un rang donné
-            <span class="math">n</span> est composée de deux fois la figure au
-            rang précédent <span class="math">n - 1</span> avec un angle de 90°
-            à l'endroit ou les deux se rejoignent...
+            Nous avons remarqué que la figure à un rang
+            <span class="math">n + 1</span> est composée de la figure au rang
+            précédent <span class="math">n</span> répétée deux fois avec une
+            jonction à angle droit (voir images plus bas).
           </p>
 
           <p>
             Nous avons ensuite choisi de représenter les angles de la figure
-            sous la forme d'une liste de 0 et de 1 (notée
-            <span class="prog">A(n)</span> avec n le rang): 0 correspondant à un
-            angle dans un sens et 1 à un angle dans l'autre sens. Nous avons
-            découvert que la liste d'angle à un rang
-            <span class="math">n</span> est:
-            <span class="prog">reverse(A(n - 1)) + 0 + A(n - 1)</span>
+            sous la forme d'une liste de 0 et de 1 définie par une fonction de
+            récurrence (notée
+            <span class="prog">A(n)</span> avec n le rang): 0 et 1 correspondant
+            à un angle dans un sens et dans l'autre. Nous avons découvert que la
+            liste d'angles à un rang <span class="math">n + 1</span> est:
+            <span class="prog">A(n + 1) = recurse(A(n)) + 0 + A(n)</span> où
+            <span class="prog">recurse(liste)</span> est une fonction qui
+            inverse l'ordre des éléments de la liste et qui remplace les 0 par
+            des 1 et les 1 par des 0 (exemple:
+            <span class="prog">recurse([0, 1, 1]) = [0, 0, 1]</span>).
           </p>
 
           <p>
-            Les résultats obtenus (en partant de
-            <span class="prog">n = 1</span>) sont:
+            Les listes obtenues (en partant du rang
+            <span class="math">n = 1</span>) sont donc:
             <span class="prog">[0]</span>, <span class="prog">[1, 0, 0]</span>,
             <span class="prog">[1, 1, 0, 0, 1, 0, 0]</span>,
             <span class="prog"
@@ -145,14 +150,15 @@
           </div>
 
           <p>
-            Le point bleu représente les points de jonction à 90° entre les deux
-            figures au rang <span class="math">n - 1</span> qui forme la figure
-            au rang <span class="math">n</span>.
+            Le point rouge représente les points de jonction entre les deux
+            figures au rang <span class="math">n</span> qui forme la figure au
+            rang <span class="math">n + 1</span>.
           </p>
 
           <p>
-            La figure semble former une fractale de plus en plus précise lorsque
-            l'on augmente le nombre de pliages <span class="math">n</span>
+            La figure semble former une fractale qui se précise de plus en plus
+            lorsque l'on augmente le nombre de pliages
+            <span class="math">n</span>.
           </p>
         </section>
       </section>
