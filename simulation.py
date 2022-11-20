@@ -1,28 +1,32 @@
 import turtle
 
+# Fonction qui remplace inverse l'ordre d'une liste et qui
+# inverse les 0 et les 1
 def inverser_seq(seq):
-    # crée une liste vide
     inv = []
     for nb in seq:
         # remplace les zéros par des uns et inversement
         inv.append(1 if nb == 0 else 0)
     return inv[::-1] # [::-1] retourne le tableau
 
-def obtenir_seq(n):
-    # fonction de recurrence pour determiner la sequence
-    def recurse(seq = [], i = 0):
-        next_seq = inverser_seq(seq) + [0] + seq
-        return (next_seq, len(next_seq), len(next_seq) + 1) if i == n else recurse(next_seq,  i + 1)
-    return recurse()
+# Fonction de récurrence pour obtenir les angles à un certain
+# rang n (similaire au suite définies par récurrence en
+# mathématiques)
+A0 = []
+def A(n):
+    if n == 0:
+        return A0
+    else:
+        return inverser_seq(A(n - 1)) + [0] + A(n - 1)
 
 def dessiner_sequence(n = 1, seg_len = 20, capture = False, show_angles = False):
     if n < 1:
-        print("Attention: impossible de tracer une figure avec moins de 1 pliage (n ne doit être plus petit que 1)")
+        print("Attention: impossible de tracer une figure avec moins de 1 pliage (n ne doit pas être plus petit que 1)")
         return
 
-    # obtenir les info de la figure au rang n, de la sequence
-    # et sa longueur
-    (angles, nb_angles, nb_segments) = obtenir_seq(n - 1)
+    angles = A(n)
+    nb_angles = len(angles)
+    nb_segments = n ** 2
 
     if show_angles == True:
         print("angles:", angles)
@@ -35,57 +39,59 @@ def dessiner_sequence(n = 1, seg_len = 20, capture = False, show_angles = False)
     # (la figure à un certain rang est simplement la figure
     # au rang n - 1 dessinée en partant du même point mais
     # avec un décalage angulaire de 90°)
-    angles = obtenir_seq(n - 2)[0] if n - 1 != 0 else []
+    prev_angles = A(n - 1)
 
-    # paramètres de turtle
+    # cache la turtle
     turtle.hideturtle()
-    turtle.color("#FF006F") # du rose :D
-
     # empêche turtle de prendre trois plombes à faire la figure
     turtle.tracer(0, 0)
 
-    min_x = 0
-    min_y = 0
-    max_x = 0
-    max_y = 0
+    maximums = (0, 0, 0, 0) # 0: min_x, 1: min_y, 2: max_x, 3: max_y
+    def get_maximums(x, y):
+        return (
+            int(x) if maximums[0] > x else maximums[0],
+            int(y) if maximums[1] > y else maximums[1],
+            int(x) if maximums[2] < x else maximums[2],
+            int(y) if maximums[3] < y else maximums[3]
+        )
 
-    # dessine la demi-figure deux fois pour former la figure
-    # complète (retour à l'origine et rotation de 90° incluse)
+    # dessine la figure au rang n - 1 deux fois avec un angle
+    # à 90° entre les deux pour former la figure au rang n
     for _ in range(2):
         turtle.goto(0, 0)
         turtle.pendown()
-        for i in range(len(angles)):
+        for i in range(len(prev_angles)):
             turtle.forward(seg_len)
-            min_x = int(turtle.xcor()) if min_x > turtle.xcor() else min_x
-            min_y = int(turtle.ycor()) if min_y > turtle.ycor() else min_y
-            max_x = int(turtle.xcor()) if max_x < turtle.xcor() else max_x
-            max_y = int(turtle.ycor()) if max_y < turtle.ycor() else max_y
-            if angles[i] == 0:
+            maximums = get_maximums(turtle.xcor(), turtle.ycor())
+            if prev_angles[i] == 0:
                 turtle.right(90)
             else:
                 turtle.left(90)
-        if len(angles) == 0:
+        if len(prev_angles) == 0:
             turtle.left(90)
         turtle.forward(seg_len)
         turtle.penup()
 
     # marque le milieu de la figure avec un point bleu
     turtle.goto(0, 0)
-    turtle.dot(6, "blue")
+    turtle.dot(4, "red")
 
     # affiche la figure
     turtle.update()
+
+    # L’algorithme ne calcule pas correctement la taille de
+    # la figure avant le rang 3
+    if n > 2:
+        print("taille quadrillage:", int((maximums[2] - maximums[0]) / seg_len), "x", int((maximums[3] - maximums[1]) / seg_len))
 
     # sauvegarde une image si demandé
     if capture == True:
         screen = turtle.getscreen()
         screen.getcanvas().postscript(file="img.eps")
 
-    print("taille quadrillage:", int((max_x - min_x) / seg_len), "x", int((max_y - min_y) / seg_len))
-
     # garde la fenêtre turtle ouverte
     turtle.mainloop()
 
 # ne pas mettre un nombre trop grand pour n parce que sinon
 # le pc aime pas
-dessiner_sequence(n = 12, seg_len = 1, show_angles = True)
+dessiner_sequence(n = 12, seg_len = 4, show_angles = False)
