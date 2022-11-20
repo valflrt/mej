@@ -1,18 +1,18 @@
-import turtle, argparse
+import turtle
 
-# Fonction qui inverse l'ordre d'une liste et qui remplace
-# les 0 par des 1 et les 1 par des 0
-def inverser_seq(seq):
-    return [(1 if e == 0 else 0) for e in seq][::-1]
-
-# Fonction de récurrence pour obtenir les angles à un certain
-# rang n (similaire au suite définies par récurrence en
-# mathématiques)
+# Fonction de récurrence pour obtenir la liste des angles à
+# un certain rang n (similaire au suite définies par récurrence
+# en mathématiques)
 A0 = []
 def A(n):
-    return inverser_seq(A(n - 1)) + [0] + A(n - 1) if n > 0 else A0
+    return inv(A(n - 1)) + [0] + A(n - 1) if n > 0 else A0
 
-def dessiner_sequence(n = 1, seg_len = 20, show_angles = False, capture = False):
+# Fonction qui inverse l'ordre d'une liste d'angles et qui
+# remplace les 0 par des 1 et les 1 par des 0
+def inv(fig):
+    return [(1 if e == 0 else 0) for e in fig][::-1]
+
+def dessiner_figure(n, seg_len = 10, show_angles = False, capture = False):
     if n < 1:
         print("Attention: impossible de tracer une figure avec moins de 1 pliage (n ne doit pas être plus petit que 1)")
         return
@@ -46,6 +46,7 @@ def dessiner_sequence(n = 1, seg_len = 20, show_angles = False, capture = False)
             int(y) if maximums[3] < y else maximums[3]
         )
 
+    turtle.right(90)
     # dessine la figure au rang n - 1 deux fois avec un angle
     # à 90° entre les deux pour former la figure au rang n
     for _ in range(2):
@@ -83,17 +84,7 @@ def dessiner_sequence(n = 1, seg_len = 20, show_angles = False, capture = False)
     # garde la fenêtre turtle ouverte
     turtle.mainloop()
 
-# ne pas mettre un nombre trop grand pour n parce que sinon
-# le pc aime pas
-dessiner_sequence(n = 12, seg_len = 5)
-
-# parser = argparse.ArgumentParser()
-
-# parser.add_argument("n")
-# parser.add_argument("-s", "--segment_len", default = 20)
-# parser.add_argument("-a", "--show-angles", action="store_true", default = False)
-# parser.add_argument("-c", "--capture", action="store_true", default = False)
-
-# args = parser.parse_args()
-
-# dessiner_sequence(int(args.n), int(args.segment_len), bool(args.show_angles), bool(args.capture))
+dessiner_figure(n = int(input("Nombre de pliages: ")), seg_len = int(input("Longueur des segments: ")))
+# ne pas mettre un nombre trop grand pour n sinon le pc aime
+# pas
+# dessiner_figure(n = 12, seg_len = 5)
