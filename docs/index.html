@@ -1,31 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Demoniac Folds</title>
     <link rel="stylesheet" href="./assets/index.css" />
-
-    <!--<script>
-      MathJax = {
-        tex: {
-          inlineMath: [["$", "$"]],
-          displayMath: [["$$", "$$"]],
-        },
-      };
-    </script>
-    <script
-      type="text/javascript"
-      id="mathjax-script"
-      async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-    ></script>
-    <script>
-      document.getElementById("mathjax-script").addEventListener("load", () => {
-        document.body.classList.remove("loading");
-      });
-    </script>-->
 
     <link
       rel="stylesheet"
@@ -46,17 +26,22 @@
 
       <section class="main">
         <p>
-          Un problème de maths: On plie une bande de papier toujours dans le
-          même sens, un certain nombre de fois. On déplie ensuite le pliage
-          obtenu et met les angles à 90° dans le sens où ils ont été pliés. Une
-          figure est obtenue.
+          On plie une bande de papier toujours dans le même sens,
+          <span class="math">n</span> fois. On déplie ensuite le pliage obtenu
+          et dispose les plis de façon à ce qu'il soit à 90° dans le sens où ils
+          ont été pliés. Une figure est obtenue lorsque l'on regarde le pliage
+          par le côté.
         </p>
 
         On cherche:
 
         <ul>
           <li>Le nombre de segments de la figure obtenue</li>
-          <li>Les dimensions de la grille sur laquelle la figure obtenue</li>
+          <li>
+            Les dimensions de la grille dans laquelle la figure obtenue peut
+            tenir (on prend comme unité de la grille la longueur des segments de
+            la figure)
+          </li>
         </ul>
 
         <h2>Recherches</h2>
@@ -119,33 +104,46 @@
 
           <div class="container">
             <div class="box">
-              <img src="./assets/images/rang_1.png" alt="rang 1" />
+              <div class="content">
+                <img src="./assets/images/rang_1.png" alt="rang 1" />
+              </div>
               <p>rang 1</p>
             </div>
-
             <div class="box">
-              <img src="./assets/images/rang_2.png" alt="rang 2" />
+              <div class="content">
+                <img src="./assets/images/rang_2.png" alt="rang 2" />
+              </div>
               <p>rang 2</p>
             </div>
-
             <div class="box">
-              <img src="./assets/images/rang_3.png" alt="rang 3" />
+              <div class="content">
+                <img src="./assets/images/rang_3.png" alt="rang 3" />
+              </div>
               <p>rang 3</p>
             </div>
-
             <div class="box">
-              <img src="./assets/images/rang_4.png" alt="rang 4" />
+              <div class="content">
+                <img src="./assets/images/rang_4.png" alt="rang 4" />
+              </div>
               <p>rang 4</p>
             </div>
-
             <div class="box">
-              <img src="./assets/images/rang_5.png" alt="rang 5" />
+              <div class="content">
+                <img src="./assets/images/rang_5.png" alt="rang 5" />
+              </div>
               <p>rang 5</p>
             </div>
-
             <div class="box">
-              <img src="./assets/images/rang_12.png" alt="rang 12" />
+              <div class="content">
+                <img src="./assets/images/rang_12.png" alt="rang 12" />
+              </div>
               <p>rang 12</p>
+            </div>
+            <div class="box">
+              <div class="content">
+                <img src="./assets/images/rang_16.png" alt="rang 16" />
+              </div>
+              <p>rang 16</p>
             </div>
           </div>
 

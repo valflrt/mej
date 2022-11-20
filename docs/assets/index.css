@@ -89,8 +89,12 @@ div.box {
   justify-content: flex-end;
 }
 
-div.box > img {
+div.box > div.content {
   margin: auto;
+}
+
+div.box img {
+  max-height: 160px;
 }
 
 a {
