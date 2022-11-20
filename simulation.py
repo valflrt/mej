@@ -26,7 +26,7 @@ def dessiner_sequence(n = 1, seg_len = 20, capture = False, show_angles = False)
 
     angles = A(n)
     nb_angles = len(angles)
-    nb_segments = n ** 2
+    nb_segments = 2 ** n
 
     if show_angles == True:
         print("angles:", angles)
