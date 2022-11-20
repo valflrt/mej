@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Open+Sans&display=swap");
 
 html,
 body {
@@ -42,7 +42,8 @@ body.mobile > div.content {
 body > div.cr {
   bottom: 0;
   left: 0;
-  padding: 0 5px;
+  padding: 2px 5px;
+  font-size: 12px;
   opacity: 0.25;
 }
 
@@ -58,19 +59,19 @@ div.prog {
 }
 
 span.prog,
-div.prog > div {
-  font: monospace 16px;
+pre.prog {
   background-color: rgb(50, 50, 60);
   border-radius: 4px;
+  font-family: "Fira Mono", "Courier New", Courier, monospace;
+  font-size: 14px;
   white-space: nowrap;
 }
 
 span.prog {
-  line-height: 150%;
-  padding: 0 4px;
+  padding: 2px 4px;
 }
 
-div.prog > div {
+pre.prog {
   padding: 4px 6px;
 }
 

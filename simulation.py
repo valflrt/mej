@@ -85,7 +85,7 @@ def dessiner_sequence(n = 1, seg_len = 20, show_angles = False, capture = False)
 
 # ne pas mettre un nombre trop grand pour n parce que sinon
 # le pc aime pas
-dessiner_sequence(n = 11, seg_len = 5)
+dessiner_sequence(n = 12, seg_len = 5)
 
 # parser = argparse.ArgumentParser()
 
