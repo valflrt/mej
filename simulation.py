@@ -7,6 +7,10 @@ A0 = []
 def A(n):
     return inv(A(n - 1)) + [0] + A(n - 1) if n > 0 else A0
 
+D0 = (1, 2)
+def D(n):
+    return tuple([v * 2 + 1 for v in D(n - 2)]) if n > 2 else D0
+
 # Fonction qui inverse l'ordre d'une liste d'angles et qui
 # remplace les 0 par des 1 et les 1 par des 0
 def inv(fig):
@@ -75,6 +79,7 @@ def dessiner_figure(n, seg_len = 10, show_angles = False, capture = False):
     # la figure avant le rang 3
     if n > 2:
         print("taille quadrillage:", int((maximums[2] - maximums[0]) / seg_len), "x", int((maximums[3] - maximums[1]) / seg_len))
+        print("taille quadrillage supposée:", D(n))
 
     # sauvegarde une "image" si demandé
     if capture == True:
