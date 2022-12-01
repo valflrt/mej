@@ -7,9 +7,21 @@ A0 = []
 def A(n):
     return inv(A(n - 1)) + [0] + A(n - 1) if n > 0 else A0
 
-D0 = (1, 2)
+# Prévision des dimensions de la figure pour un rang pair
+# (DP = Dimensions Paires)
+DP0 = (1, 2)
+def DP(n):
+    return tuple([v * 2 + 1 for v in DP(n - 2)]) if n > 2 else DP0
+
+# Prévision des dimensions de la figure pour un rang impair
+# (DI = Dimensions Impaires)
+DI0 = (1, 1)
+def DI(n):
+    (d1, d2) = DI(n - 2) if n > 1 else DI0
+    return (d1 * 2 + 1, d2 * 2) if n % 4 == 1 else (d1 * 2 + 2, d2 * 2 + 1)
+
 def D(n):
-    return tuple([v * 2 + 1 for v in D(n - 2)]) if n > 2 else D0
+    return DP(n - 1) if n % 2 == 0 else DI(n - 1)
 
 # Fonction qui inverse l'ordre d'une liste d'angles et qui
 # remplace les 0 par des 1 et les 1 par des 0
@@ -75,11 +87,13 @@ def dessiner_figure(n, seg_len = 10, show_angles = False, capture = False):
     # affiche la figure
     turtle.update()
 
-    # L’algorithme ne calcule pas correctement la taille de
-    # la figure avant le rang 3
+    
+    print("taille quadrillage calculée:", DI(n))
+
     if n > 2:
-        print("taille quadrillage:", int((maximums[2] - maximums[0]) / seg_len), "x", int((maximums[3] - maximums[1]) / seg_len))
-        print("taille quadrillage supposée:", D(n))
+        # Attention le calcul graphique n'est pas précis (une
+        # erreur d'une unité est parfois constatée)
+        print("taille quadrillage (graphiquement):", (int((maximums[2] - maximums[0]) / seg_len), int((maximums[3] - maximums[1]) / seg_len)), "! non fiable")
 
     # sauvegarde une "image" si demandé
     if capture == True:
@@ -93,3 +107,5 @@ dessiner_figure(n = int(input("Nombre de pliages: ")), seg_len = int(input("Long
 # ne pas mettre un nombre trop grand pour n sinon le pc aime
 # pas
 # dessiner_figure(n = 12, seg_len = 5)
+
+
