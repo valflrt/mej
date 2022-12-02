@@ -9,24 +9,26 @@ def A(n):
 
 # Prévision des dimensions de la figure pour un rang pair
 # (DP = Dimensions Paires)
-DP0 = (1, 2)
+DP2 = (1, 2)
 def DP(n):
-    return tuple([v * 2 + 1 for v in DP(n - 2)]) if n > 2 else DP0
+    (d1, d2) = DP(n - 2) if n > 2 else DP2
+    return (d1 * 2 + 1, d2 * 2 + 1)
 
 # Prévision des dimensions de la figure pour un rang impair
 # (DI = Dimensions Impaires)
-DI0 = (1, 1)
+DI1 = (1, 1)
 def DI(n):
-    (d1, d2) = DI(n - 2) if n > 1 else DI0
-    return (d1 * 2 + 1, d2 * 2) if n % 4 == 1 else (d1 * 2 + 2, d2 * 2 + 1)
+    (d1, d2) = DI(n - 2) if n > 1 else DI1
+    print(n, (d1, d2))
+    return (d1 * 2, d2 * 2 + 1) if n % 4 == 1 else (d1 * 2 + 1, d2 * 2 + 2)
 
 def D(n):
-    return DP(n - 1) if n % 2 == 0 else DI(n - 1)
+    return DP(n) if n % 2 == 0 else DI(n)
 
 # Fonction qui inverse l'ordre d'une liste d'angles et qui
 # remplace les 0 par des 1 et les 1 par des 0
 def inv(fig):
-    return [(1 if e == 0 else 0) for e in fig][::-1]
+    return [(1 if v == 0 else 0) for v in fig][::-1]
 
 def dessiner_figure(n, seg_len = 10, show_angles = False, capture = False):
     if n < 1:
@@ -87,13 +89,12 @@ def dessiner_figure(n, seg_len = 10, show_angles = False, capture = False):
     # affiche la figure
     turtle.update()
 
-    
     print("taille quadrillage calculée:", DI(n))
 
     if n > 2:
         # Attention le calcul graphique n'est pas précis (une
         # erreur d'une unité est parfois constatée)
-        print("taille quadrillage (graphiquement):", (int((maximums[2] - maximums[0]) / seg_len), int((maximums[3] - maximums[1]) / seg_len)), "! non fiable")
+        print("taille quadrillage trouvée graphiquement (ordre de grandeur):", (int((maximums[2] - maximums[0]) / seg_len), int((maximums[3] - maximums[1]) / seg_len)))
 
     # sauvegarde une "image" si demandé
     if capture == True:
@@ -107,5 +108,3 @@ dessiner_figure(n = int(input("Nombre de pliages: ")), seg_len = int(input("Long
 # ne pas mettre un nombre trop grand pour n sinon le pc aime
 # pas
 # dessiner_figure(n = 12, seg_len = 5)
-
-
