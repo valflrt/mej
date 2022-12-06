@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulation</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      #main {
+        height: 100%;
+      }
+
+      #main > .canvasWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #canvas {
+        border: 1px solid rgb(60, 60, 60);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Simulation</h1>
+
+      <div class="canvasWrapper">
+        <canvas id="canvas" width="800px" height="600px"></canvas>
+      </div>
+    </div>
+
+    <script>
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+
+      let [canvasWidth, canvasHeight] = [800, 600];
+      let [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
+
+      let testAngles = [0, 1, 1, 0, 1];
+
+      function drawAngles(ctx, angles) {
+        ctx.beginPath();
+        let [lastX, lastY] = [centerX, centerY];
+        ctx.moveTo(lastX, lastY);
+
+        let lastDir = "bottom";
+
+        function calcNewCoords(lastDir, lastX, lastY, angle, segLen) {
+          if (angle === 0) {
+            if (lastDir === "bottom") {
+              return [lastX - segLen, lastY];
+            } else if (lastDir === "left") {
+              return [lastX, lastY - segLen];
+            } else if (lastDir === "top") {
+              return [lastX + segLen, lastY];
+            } else if (lastDir === "right") {
+              return [lastX, lastY + segLen];
+            }
+          } else {
+            if (lastDir === "bottom") {
+              return [lastX + segLen, lastY];
+            } else if (lastDir === "left") {
+              return [lastX, lastY + segLen];
+            } else if (lastDir === "top") {
+              return [lastX - segLen, lastY];
+            } else if (lastDir === "right") {
+              return [lastX, lastY - segLen];
+            }
+          }
+        }
+
+        angles.forEach((a) => {
+          
+          ctx.lineTo((lastX = lastX + 20), (lastY = lastY + 0));
+        });
+        ctx.stroke();
+      }
+    </script>
+  </body>
+</html>
