@@ -45,50 +45,65 @@
 
     <script>
       let canvas = document.getElementById("canvas");
-      let ctx = canvas.getContext("2d");
+      let ctx = canvas.getContext && canvas.getContext("2d");
+
+      ctx.strokeStyle = "#000000";
+      ctx.strokeWidth = 2;
+
+      // Simple "python" turtle
+      let turtle = {
+        x: 0,
+        y: 0,
+        angle: 0,
+        ctx,
+        moveTo: function (x, y) {
+          this.x = x;
+          this.y = y;
+          return this;
+        },
+        forward: function (length) {
+          let x0 = this.x,
+            y0 = this.y;
+          this.x += length * Math.sin(this.angle);
+          this.y += length * Math.cos(this.angle);
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(x0, y0);
+          this.ctx.lineTo(this.x, this.y);
+          this.ctx.stroke();
+
+          return this;
+        },
+        left: function (angleInDegrees) {
+          this.angle += (angleInDegrees / 180) * Math.PI;
+          return this;
+        },
+        right: function (angleInDegrees) {
+          return this.left(-angleInDegrees);
+        },
+      };
 
       let [canvasWidth, canvasHeight] = [800, 600];
       let [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
 
-      let testAngles = [0, 1, 1, 0, 1];
+      turtle.moveTo(centerX, centerY);
 
-      function drawAngles(ctx, angles) {
-        ctx.beginPath();
-        let [lastX, lastY] = [centerX, centerY];
-        ctx.moveTo(lastX, lastY);
-
-        let lastDir = "bottom";
-
-        function calcNewCoords(lastDir, lastX, lastY, angle, segLen) {
-          if (angle === 0) {
-            if (lastDir === "bottom") {
-              return [lastX - segLen, lastY];
-            } else if (lastDir === "left") {
-              return [lastX, lastY - segLen];
-            } else if (lastDir === "top") {
-              return [lastX + segLen, lastY];
-            } else if (lastDir === "right") {
-              return [lastX, lastY + segLen];
-            }
-          } else {
-            if (lastDir === "bottom") {
-              return [lastX + segLen, lastY];
-            } else if (lastDir === "left") {
-              return [lastX, lastY + segLen];
-            } else if (lastDir === "top") {
-              return [lastX - segLen, lastY];
-            } else if (lastDir === "right") {
-              return [lastX, lastY - segLen];
-            }
-          }
-        }
-
-        angles.forEach((a) => {
-          
-          ctx.lineTo((lastX = lastX + 20), (lastY = lastY + 0));
-        });
-        ctx.stroke();
+      function inv_seq(seq) {
+        return seq.map((v) => (v === 0 ? 1 : 0)).reverse();
       }
+
+      A0 = [];
+      function A(n) {
+        return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
+      }
+
+      let angles = A(6);
+      console.log(angles);
+      angles.forEach((a) => {
+        if (a === 0) turtle.left(90);
+        else turtle.right(90);
+        turtle.forward(20);
+      });
     </script>
   </body>
 </html>
