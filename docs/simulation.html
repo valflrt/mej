@@ -4,7 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="”author”" content="valflrt" />
+    <meta name="description" content="un problème de mathématiques" />
+    <meta name="theme-color" content="#323246" />
+    <meta name="msapplication-navbutton-color" content="#323246" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#323246" />
+
     <title>Simulation</title>
+
+    <link rel="stylesheet" href="./assets/base.css" />
 
     <style>
       * {
@@ -23,87 +31,28 @@
         height: 100%;
       }
 
-      #main > .canvasWrapper {
+      #main {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
 
       #canvas {
-        border: 1px solid rgb(60, 60, 60);
+        flex-grow: 1;
+        width: 100%;
       }
     </style>
   </head>
-  <body>
+  <body class="dark">
     <div id="main">
-      <h1>Simulation</h1>
-
-      <div class="canvasWrapper">
-        <canvas id="canvas" width="800px" height="600px"></canvas>
+      <div>
+        <h1>Simulation</h1>
       </div>
+
+      <canvas id="canvas" width="200" height="200"></canvas>
     </div>
 
-    <script>
-      let canvas = document.getElementById("canvas");
-      let ctx = canvas.getContext && canvas.getContext("2d");
-
-      ctx.strokeStyle = "#000000";
-      ctx.strokeWidth = 2;
-
-      // Simple "python" turtle
-      let turtle = {
-        x: 0,
-        y: 0,
-        angle: 0,
-        ctx,
-        moveTo: function (x, y) {
-          this.x = x;
-          this.y = y;
-          return this;
-        },
-        forward: function (length) {
-          let x0 = this.x,
-            y0 = this.y;
-          this.x += length * Math.sin(this.angle);
-          this.y += length * Math.cos(this.angle);
-
-          this.ctx.beginPath();
-          this.ctx.moveTo(x0, y0);
-          this.ctx.lineTo(this.x, this.y);
-          this.ctx.stroke();
-
-          return this;
-        },
-        left: function (angleInDegrees) {
-          this.angle += (angleInDegrees / 180) * Math.PI;
-          return this;
-        },
-        right: function (angleInDegrees) {
-          return this.left(-angleInDegrees);
-        },
-      };
-
-      let [canvasWidth, canvasHeight] = [800, 600];
-      let [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
-
-      turtle.moveTo(centerX, centerY);
-
-      function inv_seq(seq) {
-        return seq.map((v) => (v === 0 ? 1 : 0)).reverse();
-      }
-
-      A0 = [];
-      function A(n) {
-        return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
-      }
-
-      let angles = A(6);
-      console.log(angles);
-      angles.forEach((a) => {
-        if (a === 0) turtle.left(90);
-        else turtle.right(90);
-        turtle.forward(20);
-      });
-    </script>
+    <script src="./simulation.js"></script>
   </body>
 </html>
