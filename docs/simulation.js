@@ -49,6 +49,16 @@ let turtle = {
     this.settings.width = width;
     return this;
   },
+  clear: function () {
+    this.ctx.clearRect(-10, -10, 1e5, 1e5);
+    return this;
+  },
+  reset: function () {
+    this.x = 0;
+    this.y = 0;
+    this.angle = 0;
+    return this;
+  },
 };
 
 function inv_seq(seq) {
@@ -88,4 +98,10 @@ ctx.translate(0.5, 0.5);
 let offsetX = -40;
 let offsetY = 70;
 
-draw(16, 800 / 2 + offsetX, 600 / 2 + offsetY);
+let rangInput = document.getElementById("rang_input");
+let drawButton = document.getElementById("draw_button");
+
+drawButton.addEventListener("click", () => {
+  turtle.clear().reset();
+  draw(Number.parseInt(rangInput.value), 800 / 2 + offsetX, 600 / 2 + offsetY);
+});
