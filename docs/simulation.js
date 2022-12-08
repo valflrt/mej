@@ -1,10 +1,6 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext && canvas.getContext("2d");
 
-// Setup canvas
-let canvasWidth = (canvas.width = canvas.clientWidth);
-let canvasHeight = (canvas.height = canvas.clientHeight);
-
 // Simple "python" turtle
 let turtle = {
   x: 0,
@@ -64,12 +60,10 @@ function A(n) {
   return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
 }
 
-function draw(n = 12) {
-  let [centerX, centerY] = [canvasWidth / 2, canvasHeight / 2];
-
+function draw(n, centerX, centerY) {
   turtle.color("rgba(220, 220, 230, 1)").width(1).moveTo(centerX, centerY);
 
-  let seg_len = 5;
+  let seg_len = 2;
 
   let angles = A(n - 1);
   console.log(angles);
@@ -89,4 +83,9 @@ function draw(n = 12) {
   turtle.forward(seg_len);
 }
 
-draw();
+ctx.translate(0.5, 0.5);
+
+let offsetX = -40;
+let offsetY = 70;
+
+draw(16, 800 / 2 + offsetX, 600 / 2 + offsetY);
