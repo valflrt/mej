@@ -63,7 +63,7 @@ function A(n) {
 function draw(n, centerX, centerY) {
   turtle.color("rgba(220, 220, 230, 1)").width(1).moveTo(centerX, centerY);
 
-  let seg_len = 2;
+  let seg_len = 1;
 
   let angles = A(n - 1);
   console.log(angles);
