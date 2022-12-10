@@ -180,8 +180,8 @@ function get_settings() {
 
 function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
   n_input.value = n;
-  offset_x_input.value = offset_x / seg_len;
-  offset_y_input.value = offset_y / seg_len;
+  offset_x_input.value = offset_x;
+  offset_y_input.value = offset_y;
   seg_len_input.value = seg_len;
   seg_width_input.value = seg_width;
 }
