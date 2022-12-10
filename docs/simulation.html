@@ -37,22 +37,84 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
+        gap: 10px;
+      }
+
+      #canvas {
+        border: 1px dashed rgb(220, 220, 230);
+      }
+
+      div.settings input {
+        width: 80px;
+      }
+
+      #message {
+        max-width: 500px;
+        text-align: center;
+      }
+      #message.error {
+        color: rgb(250, 160, 180);
       }
     </style>
   </head>
   <body class="dark">
     <div id="main">
-      <div>
-        <h1>Simulation</h1>
-      </div>
+      <h1>Simulation</h1>
 
       <div class="settings">
         <div>
-          <p>Rang (n):</p>
-          <input type="number" id="rang_input" name="rang" min="1" />
+          <label for="rang">Nombre de pliages (n):</label>
+          <input
+            type="number"
+            id="rang_input"
+            name="rang"
+            min="1"
+            max="30"
+            value="12"
+          />
+        </div>
+        <div>
+          <label for="segment_len">Longueur des segments:</label>
+          <input
+            type="number"
+            id="segment_len_input"
+            name="segment_len"
+            min="0.5"
+            step="0.5"
+            value="4"
+          />
+          <label for="seg_width">Épaisseur des segments:</label>
+          <input
+            type="number"
+            id="seg_width"
+            name="seg_width"
+            min="1"
+            max="5"
+            value="1"
+          />
+        </div>
+        <div>
+          Décalages en x et y (relatif à la longueur des segments):
+          <input type="number" id="offset_x_input" name="offset_x" value="0" />
+          <input type="number" id="offset_y_input" name="offset_y" value="0" />
+        </div>
+        <div>
+          Presets:
+          <button id="preset_1">n = 1</button>
+          <button id="preset_2">n = 2</button>
+          <button id="preset_3">n = 3</button>
+          <button id="preset_4">n = 4</button>
+          <button id="preset_5">n = 5</button>
+          <button id="preset_6">n = 6</button>
+          <button id="preset_10">n = 10</button>
+          <button id="preset_12">n = 12</button>
+          <button id="preset_16">n = 16</button>
+          <button id="preset_17">n = 17</button>
         </div>
         <button id="draw_button">Tracer</button>
       </div>
+
+      <div id="message"></div>
 
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
