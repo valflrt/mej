@@ -81,7 +81,7 @@
             name="segment_len"
             min="0.5"
             step="0.5"
-            value="4"
+            value="8"
           />
           <label for="seg_width">Épaisseur des segments:</label>
           <input
@@ -95,8 +95,18 @@
         </div>
         <div>
           Décalages en x et y (relatif à la longueur des segments):
-          <input type="number" id="offset_x_input" name="offset_x" value="0" />
-          <input type="number" id="offset_y_input" name="offset_y" value="0" />
+          <input
+            type="number"
+            id="offset_x_input"
+            name="offset_x"
+            value="5.5"
+          />
+          <input
+            type="number"
+            id="offset_y_input"
+            name="offset_y"
+            value="-21.5"
+          />
         </div>
         <div>
           Presets:
@@ -119,6 +129,7 @@
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
 
+    <script src="./turtle.js"></script>
     <script src="./simulation.js"></script>
   </body>
 </html>

@@ -3,73 +3,6 @@ let ctx = canvas.getContext && canvas.getContext("2d");
 ctx.translate(0.5, 0.5);
 ctx.lineCap = "square";
 
-// "python" turtle
-
-let turtle = {
-  x: 0,
-  y: 0,
-  angle: 0,
-  ctx,
-
-  color: "#ffffff",
-  width: 1,
-
-  moveTo: function (x, y) {
-    this.x = x;
-    this.y = y;
-    return this;
-  },
-  forward: function (length) {
-    let [x0, y0] = [this.x, this.y];
-    this.x += length * Math.sin(this.angle);
-    this.y += length * Math.cos(this.angle);
-
-    this.ctx.lineWidth = this.width;
-    this.ctx.strokeStyle = this.color;
-    this.ctx.beginPath();
-    this.ctx.lineCap = "round";
-    this.ctx.moveTo(x0, y0);
-    this.ctx.lineTo(this.x, this.y);
-    this.ctx.stroke();
-
-    return this;
-  },
-  left: function (angleInDegrees) {
-    this.angle += (angleInDegrees / 180) * Math.PI;
-    return this;
-  },
-  right: function (angleInDegrees) {
-    return this.left(-angleInDegrees);
-  },
-  dot: function (size = 1, color) {
-    this.ctx.beginPath();
-    this.ctx.arc(this.x, this.y, size * 2, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = color;
-    this.ctx.fill();
-    return this;
-  },
-  set_color: function (color) {
-    this.color = color;
-    return this;
-  },
-  set_width: function (width) {
-    this.width = width;
-    return this;
-  },
-  clear: function () {
-    this.ctx.clearRect(-10, -10, 1e5, 1e5);
-    return this;
-  },
-  reset: function () {
-    this.x = 0;
-    this.y = 0;
-    this.angle = 0;
-    this.color = "#ffffff";
-    this.width = 1;
-    return this;
-  },
-};
-
 // Simulation
 
 function inv_seq(seq) {
@@ -80,6 +13,17 @@ A0 = [];
 function A(n) {
   return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
 }
+
+// Get settings and draw
+
+let n_input = document.getElementById("rang_input");
+let seg_len_input = document.getElementById("segment_len_input");
+let seg_width_input = document.getElementById("seg_width");
+let offset_x_input = document.getElementById("offset_x_input");
+let offset_y_input = document.getElementById("offset_y_input");
+let message_element = document.getElementById("message");
+
+let turtle = create_turtle(ctx);
 
 function draw(n, offset_x, offset_y, seg_len, seg_width) {
   let [center_x, center_y] = [
@@ -109,17 +53,8 @@ function draw(n, offset_x, offset_y, seg_len, seg_width) {
   });
   turtle.forward(seg_len);
   turtle.moveTo(center_x, center_y);
-  turtle.dot(1, "rgb(250, 100, 120)");
+  turtle.dot(1, "rgb(80, 80, 255)");
 }
-
-// Get settings and draw
-
-let n_input = document.getElementById("rang_input");
-let seg_len_input = document.getElementById("segment_len_input");
-let seg_width_input = document.getElementById("seg_width");
-let offset_x_input = document.getElementById("offset_x_input");
-let offset_y_input = document.getElementById("offset_y_input");
-let message_element = document.getElementById("message");
 
 function redraw(settings) {
   turtle.clear().reset();
@@ -186,6 +121,7 @@ function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
   seg_width_input.value = seg_width;
 }
 
+redraw(get_settings());
 document.getElementById("draw_button").addEventListener("click", () => {
   redraw(get_settings());
 });
@@ -197,7 +133,7 @@ document.addEventListener(
 // Presets
 
 document.getElementById("preset_1").addEventListener("click", () => {
-  set_settings(1, 0, -20, 40, 1);
+  set_settings(1, 0, -0.5, 40, 1);
   redraw(get_settings());
 });
 document.getElementById("preset_2").addEventListener("click", () => {
