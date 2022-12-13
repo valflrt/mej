@@ -1,7 +1,40 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext && canvas.getContext("2d");
+// Setup canvas and turtle
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext && canvas.getContext("2d");
 ctx.translate(0.5, 0.5);
 ctx.lineCap = "square";
+
+let turtle = create_turtle(ctx);
+
+// Constants
+
+const canvas_width = 800;
+const canvas_height = 600;
+
+// Elements
+
+const n_input = document.getElementById("rang_input");
+const seg_len_input = document.getElementById("segment_len_input");
+const seg_width_input = document.getElementById("seg_width");
+const offset_x_input = document.getElementById("offset_x_input");
+const offset_y_input = document.getElementById("offset_y_input");
+const message_element = document.getElementById("message");
+
+// Presets
+
+const presets = {
+  preset_1: [1, 0, -0.5, 40, 1],
+  preset_2: [2, -0.5, 0, 40, 1],
+  preset_3: [3, -0.5, -1, 40, 1],
+  preset_4: [4, 0.5, -1.5, 40, 1],
+  preset_5: [5, 2, -1.5, 40, 1],
+  preset_6: [6, 2.5, 0.5, 30, 1],
+  preset_10: [10, -10, -2.5, 10, 1],
+  preset_12: [12, 5.5, -21.5, 8, 1],
+  preset_16: [16, -22, 85, 2, 1],
+  preset_17: [17, -130, 90, 1, 1],
+};
 
 // Simulation
 
@@ -9,26 +42,17 @@ function inv_seq(seq) {
   return seq.map((v) => (v === 0 ? 1 : 0)).reverse();
 }
 
-A0 = [];
+const A0 = [];
 function A(n) {
   return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
 }
 
-// Get settings and draw
+// Functions (related to drawing and settings)
 
-let n_input = document.getElementById("rang_input");
-let seg_len_input = document.getElementById("segment_len_input");
-let seg_width_input = document.getElementById("seg_width");
-let offset_x_input = document.getElementById("offset_x_input");
-let offset_y_input = document.getElementById("offset_y_input");
-let message_element = document.getElementById("message");
-
-let turtle = create_turtle(ctx);
-
-function draw(n, offset_x, offset_y, seg_len, seg_width) {
+function raw_draw(n, offset_x, offset_y, seg_len, seg_width) {
   let [center_x, center_y] = [
-    800 / 2 + offset_x * seg_len,
-    600 / 2 + offset_y * seg_len,
+    canvas_width / 2 + offset_x * seg_len,
+    canvas_height / 2 + offset_y * seg_len,
   ];
 
   turtle
@@ -45,6 +69,7 @@ function draw(n, offset_x, offset_y, seg_len, seg_width) {
     else turtle.right(90);
   });
   turtle.forward(seg_len);
+  if (n === 1) turtle.left(90);
   turtle.moveTo(center_x, center_y);
   angles.forEach((a) => {
     turtle.forward(seg_len);
@@ -56,43 +81,19 @@ function draw(n, offset_x, offset_y, seg_len, seg_width) {
   turtle.dot(1, "rgb(80, 80, 255)");
 }
 
-function redraw(settings) {
+function draw(settings) {
   turtle.clear().reset();
   let errors = check_settings(settings);
   if (errors.length === 0) {
     console.log(settings);
     message_element.classList.remove("error");
     message_element.innerText = "";
-    draw(...settings);
+    set_settings(...settings);
+    raw_draw(...settings);
   } else {
     message_element.classList.add("error");
     message_element.innerText = errors.join(" / ");
   }
-}
-
-function check_settings(settings) {
-  let [n, , , seg_len, seg_width] = settings;
-  let errors = [];
-
-  !Number.isInteger(n) && errors.push("n doit être un nombre entier");
-  n > 30 && errors.push("n ne doit pas dépasser 30");
-  n < 1 && errors.push("n ne doit pas être plus petit que 1");
-
-  !Number.isInteger(seg_len) &&
-    errors.push("La longueur des segments doit être un nombre entier");
-  seg_len < 1 &&
-    errors.push("La longueur des segments ne doit pas être plus petit que 1");
-  seg_len > 100 &&
-    errors.push("La longueur des segments ne doit pas dépasser 100");
-
-  !Number.isInteger(seg_len) &&
-    errors.push("L'épaisseur des segments doit être un nombre entier");
-  seg_width < 1 &&
-    errors.push("L'épaisseur des segments ne doit pas être plus petite que 1");
-  seg_width > 10 &&
-    errors.push("L'épaisseur des segments ne doit pas dépasser 10");
-
-  return errors;
 }
 
 function get_settings() {
@@ -113,6 +114,31 @@ function get_settings() {
   return [n, offset_x, offset_y, seg_len, seg_width];
 }
 
+function check_settings(settings) {
+  let [n, , , seg_len, seg_width] = settings;
+  let errors = [];
+
+  !Number.isInteger(n) && errors.push("n doit être un nombre entier");
+  n > 30 && errors.push("n ne doit pas dépasser 30");
+  n < 1 && errors.push("n ne doit pas être plus petit que 1");
+
+  !Number.isInteger(seg_len) &&
+    errors.push("La longueur des segments doit être un nombre entier");
+  seg_len < 1 &&
+    errors.push("La longueur des segments ne doit pas être plus petit que 1");
+  seg_len > 100 &&
+    errors.push("La longueur des segments ne doit pas dépasser 100");
+
+  !Number.isInteger(seg_width) &&
+    errors.push("L'épaisseur des segments doit être un nombre entier");
+  seg_width < 1 &&
+    errors.push("L'épaisseur des segments ne doit pas être plus petite que 1");
+  seg_width > 5 &&
+    errors.push("L'épaisseur des segments ne doit pas dépasser 10");
+
+  return errors;
+}
+
 function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
   n_input.value = n;
   offset_x_input.value = offset_x;
@@ -121,54 +147,30 @@ function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
   seg_width_input.value = seg_width;
 }
 
-redraw(get_settings());
+// Init
+
+set_settings(...presets.preset_12);
+draw(get_settings());
+
+// Set event listeners
+
 document.getElementById("draw_button").addEventListener("click", () => {
-  redraw(get_settings());
+  draw(get_settings());
 });
 document.addEventListener(
   "keypress",
-  (e) => e.key === "Enter" && redraw(get_settings())
+  (e) => e.key === "Enter" && draw(get_settings())
 );
 
-// Presets
+document.getElementById("reset_button").addEventListener("click", () => {
+  let settings = [12, 5.5, -21.5, 8, 1];
+  set_settings(...settings);
+  draw(settings);
+});
 
-document.getElementById("preset_1").addEventListener("click", () => {
-  set_settings(1, 0, -0.5, 40, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_2").addEventListener("click", () => {
-  set_settings(2, -0.5, 0, 40, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_3").addEventListener("click", () => {
-  set_settings(3, -0.5, -1, 40, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_4").addEventListener("click", () => {
-  set_settings(4, 0.5, -1.5, 40, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_5").addEventListener("click", () => {
-  set_settings(5, 2, -1.5, 40, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_6").addEventListener("click", () => {
-  set_settings(6, 2.5, 0.5, 30, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_10").addEventListener("click", () => {
-  set_settings(10, -10, -2.5, 10, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_12").addEventListener("click", () => {
-  set_settings(12, 5.5, -21.5, 8, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_16").addEventListener("click", () => {
-  set_settings(16, -22, 85, 2, 1);
-  redraw(get_settings());
-});
-document.getElementById("preset_17").addEventListener("click", () => {
-  set_settings(17, -130, 90, 1, 1);
-  redraw(get_settings());
-});
+Object.entries(presets).forEach(([id, settings]) =>
+  document.getElementById(id).addEventListener("click", () => {
+    set_settings(...settings);
+    draw(get_settings());
+  })
+);
