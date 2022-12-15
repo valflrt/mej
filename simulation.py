@@ -18,8 +18,16 @@ DP2 = (1, 2)
 
 def DP(n):
     (d1, d2) = DP(n - 2) if n > 2 else DP2
-    print(n, (d1, d2))
+    #print(n, (d1, d2))
     return (d1 * 2 + 1, d2 * 2 + 1)
+
+
+def DP_alt(n):
+    if n > 2:
+        (d1, d2) = DP(n - 2)
+        return (d1 * 2 + 1, d2 * 2 + 1)
+    else:
+        return DP2
 
 
 # Prévision des dimensions de la figure pour un rang impair
@@ -29,8 +37,16 @@ DI1 = (1, 1)
 
 def DI(n):
     (d1, d2) = DI(n - 2) if n > 2 else DI1
-    print(n, (d1, d2))
+    #print(n, (d1, d2))
     return (d1 * 2, d2 * 2 + 1) if n % 4 == 1 else (d1 * 2 + 2, d2 * 2 + 1)
+
+
+def DI_alt(n):
+    if n > 1:
+        (d1, d2) = DI(n - 2)
+        return (d1 * 2, d2 * 2 + 1) if n % 4 == 1 else (d1 * 2 + 2, d2 * 2 + 1)
+    else:
+        return DI1
 
 
 # "Rassemble" les prévisions pour les rangs pairs et impairs
@@ -128,9 +144,14 @@ def simulation(n, seg_len=10, show_angles=False, capture=False):
     turtle.done()
 
 
-simulation(
-    n=int(input("Nombre de pliages: ")), seg_len=int(input("Longueur des segments: "))
-)
+print(dict([(n, DI(n)) for n in range(1, 11, 2)]))
+print(dict([(n, DI_alt(n)) for n in range(1, 11, 2)]))
+print(dict([(n, DP(n)) for n in range(2, 12, 2)]))
+print(dict([(n, DP_alt(n)) for n in range(2, 12, 2)]))
+
+#simulation(
+#    n=int(input("Nombre de pliages: ")), seg_len=int(input("Longueur des segments: "))
+#)
 # ne pas mettre un nombre trop grand pour n sinon le pc aime
 # pas
 # dessiner_figure(n = 12, seg_len = 5)
