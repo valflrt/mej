@@ -77,7 +77,7 @@ function raw_draw(n, offset_x, offset_y, seg_len, seg_width) {
 
   turtle
     .set_color("rgba(220, 220, 230, 1)")
-    .set_width(seg_width)
+    .set_width(seg_width * 2 - 1)
     .moveTo(center_x, center_y);
 
   let angles = A(n - 1);
@@ -161,8 +161,8 @@ function check_settings(settings) {
     errors.push("L'épaisseur des segments doit être un nombre entier");
   seg_width < 1 &&
     errors.push("L'épaisseur des segments ne doit pas être plus petite que 1");
-  seg_width > 10 &&
-    errors.push("L'épaisseur des segments ne doit pas dépasser 10");
+  seg_width > 5 &&
+    errors.push("L'épaisseur des segments ne doit pas dépasser 5");
 
   return errors;
 }
