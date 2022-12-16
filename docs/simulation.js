@@ -19,7 +19,7 @@ const seg_len_input = document.getElementById("segment_len_input");
 const seg_width_input = document.getElementById("seg_width");
 const offset_x_input = document.getElementById("offset_x_input");
 const offset_y_input = document.getElementById("offset_y_input");
-const message_element = document.getElementById("message");
+const fig_msg_element = document.querySelector("#drawing_wrapper .msg");
 
 // Presets
 
@@ -45,6 +45,26 @@ function inv_seq(seq) {
 const A0 = [];
 function A(n) {
   return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
+}
+
+DP2 = [1, 2];
+function DP(n) {
+  if (n > 2) {
+    [d1, d2] = DP(n - 2);
+    return [d1 * 2 + 1, d2 * 2 + 1];
+  } else return DP2;
+}
+
+DI1 = [1, 1];
+function DI(n) {
+  if (n > 1) {
+    [d1, d2] = DI(n - 2);
+    return n % 4 == 3 ? [d1 * 2, d2 * 2 + 1] : [d1 * 2 + 2, d2 * 2 + 1];
+  } else return DI1;
+}
+
+function D(n) {
+  return n % 2 == 0 ? DP(n) : DI(n);
 }
 
 // Functions (related to drawing and settings)
@@ -86,13 +106,15 @@ function draw(settings) {
   let errors = check_settings(settings);
   if (errors.length === 0) {
     console.log(settings);
-    message_element.classList.remove("error");
-    message_element.innerText = "";
+    fig_msg_element.classList.remove("error");
+    fig_msg_element.innerText = `Dimensions de la figure: (${D(
+      settings[0]
+    ).join("; ")})`;
     set_settings(...settings);
     raw_draw(...settings);
   } else {
-    message_element.classList.add("error");
-    message_element.innerText = errors.join(" / ");
+    fig_msg_element.classList.add("error");
+    fig_msg_element.innerText = errors.join(" / ");
   }
 }
 
@@ -149,8 +171,12 @@ function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
 
 // Init
 
-set_settings(...presets.preset_12);
-draw(get_settings());
+function init() {
+  let settings = [12, 5.5, -21.5, 8, 1];
+  set_settings(...settings);
+  draw(settings);
+}
+init();
 
 // Set event listeners
 
@@ -162,11 +188,7 @@ document.addEventListener(
   (e) => e.key === "Enter" && draw(get_settings())
 );
 
-document.getElementById("reset_button").addEventListener("click", () => {
-  let settings = [12, 5.5, -21.5, 8, 1];
-  set_settings(...settings);
-  draw(settings);
-});
+document.getElementById("reset_button").addEventListener("click", init);
 
 Object.entries(presets).forEach(([id, settings]) =>
   document.getElementById(id).addEventListener("click", () => {
