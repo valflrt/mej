@@ -161,7 +161,7 @@ function check_settings(settings) {
     errors.push("L'épaisseur des segments doit être un nombre entier");
   seg_width < 1 &&
     errors.push("L'épaisseur des segments ne doit pas être plus petite que 1");
-  seg_width > 5 &&
+  seg_width > 10 &&
     errors.push("L'épaisseur des segments ne doit pas dépasser 10");
 
   return errors;
