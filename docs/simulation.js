@@ -102,6 +102,12 @@ function raw_draw(n, offset_x, offset_y, seg_len, seg_width) {
 }
 
 function draw(settings) {
+  Object.entries(presets).forEach(([id, preset_settings]) =>
+    preset_settings.every((s, i) => s === settings[i])
+      ? document.getElementById(id).classList.add("active")
+      : document.getElementById(id).classList.remove("active")
+  );
+
   turtle.clear().reset();
   let errors = check_settings(settings);
   if (errors.length === 0) {

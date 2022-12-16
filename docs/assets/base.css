@@ -113,7 +113,15 @@ button {
   outline: none;
 }
 
+button {
+  transition: border 100ms;
+}
+input {
+  transition: border 200ms;
+}
+
 input:focus,
-button:active {
+button:active,
+button.active {
   border: 2px solid rgb(160, 160, 250);
 }
