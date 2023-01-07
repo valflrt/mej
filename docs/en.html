@@ -28,51 +28,48 @@
   </head>
   <body class="dark">
     <div class="content">
-      <nav>
-        <a href="./index.html">Accueil</a>
-        <a href="./simulation.html">Simulation</a>
-      </nav>
-
       <h1>Demoniac Folds</h1>
 
       <section>
         <p>
-          On plie une bande de papier toujours dans le même sens,
-          <span class="math">n</span> fois. On déplie ensuite le pliage obtenu
-          et dispose les plis de façon à former des angles droits dans le sens
-          où ils ont été pliés. On s'intéresse à la figure obtenue lorsque l'on
-          regarde le pliage de côté.
+          Problem: A strip of paper is always folded in the same direction,
+          <span class="math">n</span> times. The folding obtained is then
+          unfolded and the folds arranged so as to form right angles in the
+          direction in which they were folded. We are interested in the figure
+          obtained when we look at the folding from the side.
         </p>
 
-        <p>On cherche:</p>
+        <p>We are looking for:</p>
 
         <ul>
-          <li>Le nombre de segments de la figure obtenue</li>
+          <li>The number of segments of the figure</li>
           <li>
-            Les dimensions de la grille dans laquelle la figure obtenue peut
-            tenir (on prend comme unité de la grille la longueur des segments de
-            la figure)
+            The dimensions of the smallest rectangle in which the figure can fit
+            (as units, we use the length of the segments of the figure)
           </li>
         </ul>
 
         <h2>Solutions</h2>
 
         <section>
-          <h3>Nombre de segments de la figure obtenue</h3>
+          <h3>Number of segments of the figure</h3>
 
           <section>
             <p>
-              Pour chaque nouveau pliage, on plie chaque segment en deux. Le
-              nombre de segment est donc doublé à chaque pliage, il y a donc:
-              <span class="math">2^n</span> segments.
+              For every new folding, each segment is divided in two new others.
+              The number of segments of the figure doubles for every folding, so
+              there is <span class="math">2^n</span> segments.
             </p>
           </section>
 
-          <h3>Taille de la figure</h3>
+          <h3>
+            Dimensions of the smallest rectangle in which the figure can fit
+          </h3>
 
           <section>
             <p>
-              Nous avons remarqué que la figure à un rang
+              We noticed that the figure... [à continuer] Nous avons remarqué
+              que la figure à un rang
               <span class="math">n + 1</span> est composée de la figure au rang
               précédent <span class="math">n</span> répétée deux fois en partant
               du même point mais avec un angle droit entre les deux (voir images
@@ -259,7 +256,7 @@
       </section>
     </div>
 
-    <div class="copyright">© 2022-present Valentin Fleurit</div>
+    <div class="cr">© 2022-present Valentin Fleurit</div>
 
     <script>
       function detectMobile() {

@@ -20,6 +20,8 @@ body {
   background-color: rgba(160, 160, 250, 0.25);
 }
 
+/* Body / Content */
+
 body {
   font-family: "Open Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -39,7 +41,19 @@ body.mobile > div.content {
   padding: 10px 20px 40px;
 }
 
-body > div.cr {
+body > div.content > nav {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+body > div.content section {
+  padding-left: 6px;
+}
+
+body > div.copyright {
   bottom: 0;
   left: 0;
   padding: 2px 5px;
@@ -47,9 +61,7 @@ body > div.cr {
   opacity: 0.25;
 }
 
-body > div.content section {
-  padding-left: 6px;
-}
+/* General */
 
 div.math,
 div.prog {
@@ -107,10 +119,18 @@ a {
 
 input,
 button {
-  color: rgb(220, 220, 230);
-  background: rgb(40, 40, 50);
   border: 2px solid rgb(100, 100, 120);
   outline: none;
+}
+body.dark input,
+body.dark button {
+  color: rgb(220, 220, 230);
+  background: rgb(40, 40, 50);
+}
+body.light input,
+body.light button {
+  color: rgb(40, 40, 50);
+  background: rgb(220, 220, 230);
 }
 
 button {
