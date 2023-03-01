@@ -145,3 +145,45 @@ button:active,
 button.active {
   border: 2px solid rgb(160, 160, 250);
 }
+
+/* simulation */
+
+#drawing_wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+#canvas {
+  border: 1px dashed rgb(220, 220, 230);
+}
+
+div.settings {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+div.settings > div {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+div.settings input {
+  width: 80px;
+}
+
+.msg {
+  max-width: 500px;
+  text-align: center;
+}
+.msg.error {
+  color: rgb(250, 160, 180);
+}

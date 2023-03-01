@@ -1,16 +1,25 @@
-// Setup canvas and turtle
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext && canvas.getContext("2d");
-ctx.translate(0.5, 0.5);
-ctx.lineCap = "square";
-
-let turtle = create_turtle(ctx);
-
 // Constants
 
 const canvas_width = 800;
 const canvas_height = 600;
+
+// Setup canvas and turtle
+
+function setup_canvas(canvas, width, height) {
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext && canvas.getContext("2d");
+  ctx.translate(0.5, 0.5);
+  ctx.lineCap = "square";
+  return ctx;
+}
+
+let main_ctx = setup_canvas(
+  document.getElementById("canvas"),
+  canvas_width,
+  canvas_height
+);
+let main_turtle = create_turtle(main_ctx);
 
 // Elements
 
@@ -24,16 +33,16 @@ const fig_msg_element = document.querySelector("#drawing_wrapper .msg");
 // Presets
 
 const presets = {
-  preset_1: [1, 0, -0.5, 40, 1],
-  preset_2: [2, -0.5, 0, 40, 1],
-  preset_3: [3, -0.5, -1, 40, 1],
-  preset_4: [4, 0.5, -1.5, 40, 1],
-  preset_5: [5, 2, -1.5, 40, 1],
-  preset_6: [6, 2.5, 0.5, 30, 1],
-  preset_10: [10, -10, -2.5, 10, 1],
-  preset_12: [12, 5.5, -21.5, 8, 1],
-  preset_16: [16, -22, 85, 2, 1],
-  preset_17: [17, -130, 90, 1, 1],
+  preset_1: [1, 9.5, 7, 40, 1],
+  preset_2: [2, 9.5, 7.5, 40, 1],
+  preset_3: [3, 9.5, 6.5, 40, 1],
+  preset_4: [4, 10.5, 6, 40, 1],
+  preset_5: [5, 12, 6, 40, 1],
+  preset_6: [6, 12.5, 8, 40, 1],
+  preset_10: [10, 29.5, 27.5, 10, 1],
+  preset_12: [12, 55.5, 16, 8, 1],
+  preset_16: [16, 178.5, 234.5, 2, 1],
+  preset_17: [17, 285, 385, 1, 1],
 };
 
 // Simulation
@@ -69,16 +78,14 @@ function D(n) {
 
 // Functions (related to drawing and settings)
 
-function raw_draw(n, offset_x, offset_y, seg_len, seg_width) {
-  let [center_x, center_y] = [
-    canvas_width / 2 + offset_x * seg_len,
-    canvas_height / 2 + offset_y * seg_len,
-  ];
+function raw_draw(n, center_x, center_y, seg_len, seg_width, turtle) {
+  center_x = center_x * seg_len;
+  center_y = center_y * seg_len;
 
   turtle
     .set_color("rgba(220, 220, 230, 1)")
     .set_width(seg_width * 2 - 1)
-    .moveTo(center_x, center_y);
+    .move_to(center_x, center_y);
 
   let angles = A(n - 1);
   console.log(angles);
@@ -90,25 +97,44 @@ function raw_draw(n, offset_x, offset_y, seg_len, seg_width) {
   });
   turtle.forward(seg_len);
   if (n === 1) turtle.left(90);
-  turtle.moveTo(center_x, center_y);
+  turtle.move_to(center_x, center_y);
   angles.forEach((a) => {
     turtle.forward(seg_len);
     if (a === 0) turtle.left(90);
     else turtle.right(90);
   });
   turtle.forward(seg_len);
-  turtle.moveTo(center_x, center_y);
+  turtle.move_to(center_x, center_y);
   turtle.dot(1, "rgb(80, 80, 255)");
 }
 
-function draw(settings) {
+// Create non-interactive canvas that displays a sequence
+function lone_canvas(
+  canvas,
+  n,
+  offset_x,
+  offset_y,
+  width,
+  height,
+  seg_len,
+  seg_width
+) {
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext && canvas.getContext("2d");
+  ctx.translate(0.5, 0.5);
+  ctx.lineCap = "square";
+  raw_draw(n, offset_x, offset_y, seg_len, seg_width, create_turtle(ctx));
+}
+
+function draw_simulation(settings) {
   Object.entries(presets).forEach(([id, preset_settings]) =>
     preset_settings.every((s, i) => s === settings[i])
       ? document.getElementById(id).classList.add("active")
       : document.getElementById(id).classList.remove("active")
   );
 
-  turtle.clear().reset();
+  main_turtle.clear().reset();
   let errors = check_settings(settings);
   if (errors.length === 0) {
     console.log(settings);
@@ -117,7 +143,7 @@ function draw(settings) {
       settings[0]
     ).join("; ")})`;
     set_settings(...settings);
-    raw_draw(...settings);
+    raw_draw(...settings, main_turtle);
   } else {
     fig_msg_element.classList.add("error");
     fig_msg_element.innerText = errors.join(" / ");
@@ -178,20 +204,19 @@ function set_settings(n, offset_x, offset_y, seg_len, seg_width) {
 // Init
 
 function init() {
-  let settings = [12, 5.5, -21.5, 8, 1];
-  set_settings(...settings);
-  draw(settings);
+  set_settings(...presets.preset_12);
+  draw_simulation(presets.preset_12);
 }
 init();
 
 // Set event listeners
 
 document.getElementById("draw_button").addEventListener("click", () => {
-  draw(get_settings());
+  draw_simulation(get_settings());
 });
 document.addEventListener(
   "keypress",
-  (e) => e.key === "Enter" && draw(get_settings())
+  (e) => e.key === "Enter" && draw_simulation(get_settings())
 );
 
 document.getElementById("reset_button").addEventListener("click", init);
@@ -199,6 +224,19 @@ document.getElementById("reset_button").addEventListener("click", init);
 Object.entries(presets).forEach(([id, settings]) =>
   document.getElementById(id).addEventListener("click", () => {
     set_settings(...settings);
-    draw(get_settings());
+    draw_simulation(get_settings());
   })
+);
+
+[
+  // id, n, offset_x, offset_y, width, height, seg_len, seg_width
+  ["fig_rang_1", 1, 0.5, 0.5, 60, 60, 30, 1],
+  ["fig_rang_2", 2, 0.5, 1.5, 42.5, 62.5, 20, 1],
+  ["fig_rang_3", 3, 1.5, 0.5, 82.5, 62.5, 20, 1],
+  ["fig_rang_4", 4, 4, 1, 105, 75, 15, 1],
+  ["fig_rang_5", 5, 5.5, 2.5, 72.5, 82.5, 10, 1],
+  ["fig_rang_12", 12, 55, 12, 200, 136, 2, 1],
+  ["fig_rang_13", 13, 90, 48, 116, 138, 1, 1],
+].forEach(([id, ...params]) =>
+  lone_canvas(document.getElementById(id), ...params)
 );

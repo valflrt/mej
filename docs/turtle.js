@@ -10,7 +10,7 @@ function create_turtle(ctx) {
     color: "#ffffff",
     width: 1,
 
-    moveTo: function (x, y) {
+    move_to: function (x, y) {
       this.x = x;
       this.y = y;
       return this;
