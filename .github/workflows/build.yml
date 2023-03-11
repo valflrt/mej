@@ -18,18 +18,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: cd
-        run: cd website && pwd
-
       - name: Install (npm ci)
-        run: npm i
+        run: cd website && npm ci
 
       - name: Build
-        run: npm run build
+        run: cd website && npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: pages
-          publish_dir: ./dist
+          publish_dir: ./website/dist
