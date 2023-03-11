@@ -204,7 +204,7 @@ export function rawDraw(
   turtle.forward(segLen);
 
   turtle.moveTo(centerX, centerY);
-  if (showCenter !== false) turtle.dot(3, "rgb(80, 80, 255)");
+  if (showCenter !== false) turtle.dot(3, "rgb(255, 90, 90)");
 }
 
 export type LoneCanvasSettings = Settings & {
