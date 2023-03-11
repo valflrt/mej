@@ -110,7 +110,7 @@ function invSeq(seq: Seq) {
 }
 
 const A0: Seq = [];
-function A(n: number): Seq {
+export function A(n: number): Seq {
   return n > 0 ? [...invSeq(A(n - 1)), 0, ...A(n - 1)] : A0;
 }
 

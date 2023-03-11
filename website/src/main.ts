@@ -138,7 +138,7 @@ function drawSimulation(settings: Settings) {
   if (errors.length === 0) {
     console.log(settings);
     figMsgElement.classList.remove("error");
-    figMsgElement.innerText = `Dimensions de la figure: (${D(settings[0]).join(
+    figMsgElement.innerText = `Dimensions de la figure: (${D(settings.n).join(
       "; "
     )})`;
     setSettings(settings);
