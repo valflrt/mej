@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="valflrt" />
+    <meta name="description" content="Un problème de mathématiques" />
+    <meta name="theme-color" content="#323246" />
+    <meta name="msapplication-navbutton-color" content="#323246" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#323246" />
+
+    <title>Maths En Jean: Pliage fractal</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css"
+      integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js"
+      integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" crossorigin src="/assets/index-36fd2876.js"></script>
+    <link rel="stylesheet" href="/assets/index-c03726bf.css">
+  </head>
+  <body class="dark">
+    <div class="content">
+      <nav>
+        <a href="#title-simulateur">Simulateur</a>
+        <a
+          href="https://www.mathenjeans.fr/content/Des-plis-qui-se-deplient-Lycee-Leonce-Vieljeux-La-Rochelle"
+        >
+          Énoncé Original
+        </a>
+      </nav>
+
+      <h1>Pliage fractal</h1>
+
+      <section>
+        <p>
+          On plie une bande de papier toujours dans le même sens,
+          <span class="math">n</span> fois. On déplie ensuite le pliage obtenu
+          et dispose les plis de façon à former des angles droits dans le sens
+          où ils ont été pliés. On s'intéresse à la figure obtenue lorsque l'on
+          regarde le pliage de côté.
+        </p>
+
+        <p>On cherche:</p>
+
+        <ul>
+          <li>Le nombre de segments de la figure obtenue</li>
+          <li>
+            Les dimensions de la grille dans laquelle la figure obtenue peut
+            tenir (on prend comme unité de la grille la longueur des segments de
+            la figure)
+          </li>
+        </ul>
+
+        <h2>Recherches</h2>
+
+        <section>
+          <h3>Nombre de segments de la figure obtenue</h3>
+
+          <section>
+            <p>
+              Pour chaque nouveau pliage, on plie chaque segment en deux. Le
+              nombre de segment est donc doublé à chaque pliage, il y a donc:
+              <span class="math">2^n</span> segments.
+            </p>
+          </section>
+
+          <h3>Taille de la figure</h3>
+
+          <section>
+            <p>
+              Nous avons remarqué que la figure à un rang
+              <span class="math">n + 1</span> est composée de la figure au rang
+              précédent <span class="math">n</span> répétée deux fois en partant
+              du même point mais avec un angle droit à la jointure (voir images
+              plus bas).
+            </p>
+
+            <p>
+              Nous avons ensuite choisi de représenter les angles de la figure
+              sous la forme d'une liste de 0 et de 1: 0 et 1 correspondant à un
+              angle dans un sens et dans l'autre. Cette liste est définie par
+              une fonction de récurrence telle que:
+              <span class="prog">A(n + 1) = join(inv(A(n)), [0], A(n))</span>.
+              Où <span class="prog">inv(liste)</span> est une fonction qui
+              inverse l'ordre des éléments de la liste et qui remplace les 0 par
+              des 1 et les 1 par des 0 (exemple:
+              <span class="prog">inv([1, 0, 1, 1]) = [0, 0, 1, 0]</span>) et
+              <span class="prog">join(listes)</span> une fonction qui créé une
+              nouvelle liste issue des listes données.
+            </p>
+
+            <p>
+              Les listes obtenues (en partant du rang
+              <span class="math">n = 1</span>) sont donc:
+              <span class="prog">[0]</span>,
+              <span class="prog">[1, 0, 0]</span>,
+              <span class="prog">[1, 1, 0, 0, 1, 0, 0]</span>,
+              <span class="prog"
+                >[1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0]</span
+              >, ...
+            </p>
+
+            <p>
+              Nous avons donc créé
+              <a href="https://github.com/valflrt/mej/blob/main/simulation.py"
+                >un programme en python</a
+              >
+              puis
+              <a href="#title-simulateur">un simulateur en ligne</a>
+              sur le même principe permettant de trouver la figure à un rang
+              <span class="math">n</span>. Voici les figures obtenues pour
+              certains rangs donnés:
+            </p>
+
+            <div class="container">
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_1"></canvas>
+                </div>
+                <p>rang 1</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_2"></canvas>
+                </div>
+                <p>rang 2</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_3"></canvas>
+                </div>
+                <p>rang 3</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_4"></canvas>
+                </div>
+                <p>rang 4</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_5"></canvas>
+                </div>
+                <p>rang 5</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_12"></canvas>
+                </div>
+                <p>rang 12</p>
+              </div>
+              <div class="box">
+                <div class="content">
+                  <canvas id="fig_rang_13"></canvas>
+                </div>
+                <p>rang 16</p>
+              </div>
+            </div>
+
+            <p>
+              Sur les images, le point rouge représente les points de jonction
+              entre les deux figures au rang <span class="math">n</span> qui
+              forme la figure au rang <span class="math">n + 1</span>.
+            </p>
+
+            <p>
+              La figure semble former une fractale qui se précise de plus en
+              plus lorsque l'on augmente le nombre de pliages
+              <span class="math">n</span>.
+            </p>
+
+            <p>
+              À l'aide du programme nous avons pu mesurer les dimensions de la
+              figure pour certains rangs, par exemple en partant du rang
+              <span class="math">n = 1</span> on a une figure de dimensions:
+              1/1, 1/2, 2/3, 3/5, 6/7, ...
+            </p>
+
+            <p>
+              Après observation des figures au rangs pairs et impairs, en
+              superposant quelques une de ces figures, nous avons remarqué que:
+            </p>
+
+            <ul>
+              <li>
+                Pour passer d'un rang pair <span class="math">n</span> au
+                suivant <span class="math">n + 1</span>, on a:
+                <span class="math">l_{n + 1} = l_{n} \times 2 + 1</span> et
+                <span class="math">L_{n + 1} = L_{n} \times 2 + 1</span>
+                (<span class="math">l</span> et la longueur et
+                <span class="math">L</span> est la largeur de la figure)
+              </li>
+              <li>
+                Pour passer d'un rang impair au suivant, une fois sur deux, on
+                a: <span class="math">l_{n + 1} = l_{n} \times 2</span> et
+                <span class="math">L_{n + 1} = L_{n} \times 2 + 1</span> puis
+                <span class="math">l_{n + 1} = l_{n} \times 2 + 2</span> et
+                <span class="math">L_{n + 1} = L_{n} \times 2 + 1</span>
+              </li>
+            </ul>
+
+            <p>
+              Nous avons ensuite décidé d'écrire <span class="math">l</span> et
+              <span class="math">L</span> sous la forme d'une matrice:
+            </p>
+
+            <pre class="math">
+              \begin{pmatrix}
+                l \\
+                L
+              \end{pmatrix}
+            </pre>
+
+            <p>
+              Nous avons choisi de représenter les expressions des dimensions
+              aux rangs pairs et impairs sous la forme de suites définies par
+              récurrence, <span class="math">P</span> pour les rangs pair et
+              <span class="math">I</span> pour les rangs impairs:
+            </p>
+
+            <pre class="math">
+              \begin{cases}
+                P_{2} = \begin{pmatrix}
+                    1 \\
+                    2
+                  \end{pmatrix} \\
+                P_{n + 2} = 2 P_{n} + \begin{pmatrix}
+                    1 \\
+                    1
+                  \end{pmatrix}
+              \end{cases}
+            </pre>
+
+            <pre class="math">
+              \begin{cases}
+                I_{1} = \begin{pmatrix}
+                    1 \\
+                    1
+                  \end{pmatrix} \\
+                I_{n + 2} = \begin{cases}
+                  2 I_{n} + \begin{pmatrix}
+                      0 \\
+                      1
+                    \end{pmatrix} & \text{si } n \equiv 3 [4] \\
+                  2 I_{n} + \begin{pmatrix}
+                      2 \\
+                      1
+                    \end{pmatrix} & \text{si } n \equiv 1 [4]
+                \end{cases}
+              \end{cases}
+            </pre>
+
+            <p>
+              Ces formules ne sont pas démontrées et cela nous a donc posé
+              problème. Nous avons donc cherché une autre manière pour retrouver
+              les dimensions mais en la démontrant.
+            </p>
+          </section>
+        </section>
+      </section>
+
+      <h1 id="title-simulateur">Simulateur</h1>
+
+      <section>
+        <div id="drawing_wrapper">
+          <div class="settings">
+            <div>
+              <span>
+                Nombre de pliages (n):
+                <input
+                  type="number"
+                  id="rang_input"
+                  name="rang"
+                  min="1"
+                  max="30"
+                  step="1"
+                />
+              </span>
+            </div>
+            <div>
+              <span>
+                Longueur des segments:
+                <input
+                  type="number"
+                  id="segment_len_input"
+                  name="segment_len"
+                  min="1"
+                  max="100"
+                  step="1"
+                />
+              </span>
+              <span>
+                Épaisseur des segments:
+                <input
+                  type="number"
+                  id="seg_width"
+                  name="seg_width"
+                  min="1"
+                  max="5"
+                  step="1"
+                />
+              </span>
+            </div>
+            <div>
+              <span>
+                Décalages en x et y (relatif à la longueur des segments):
+                <input
+                  type="number"
+                  id="offset_x_input"
+                  name="offset_x"
+                  step="0.5"
+                />
+                <input
+                  type="number"
+                  id="offset_y_input"
+                  name="offset_y"
+                  step="0.5"
+                />
+              </span>
+            </div>
+            <div>
+              <span>
+                Montrer ou non les angles 0 et 1 (voir plus haut):
+                <input type="checkbox" id="angle_tag_input" name="angle_tag" />
+              </span>
+            </div>
+            <div>
+              <span>
+                Montrer ou non d'une couleur différente la figure au rang
+                précédent:
+                <input type="checkbox" id="prev_seq_input" name="prev_seq" />
+              </span>
+            </div>
+            <div>
+              <span>
+                Presets:
+                <button id="preset_1">n = 1</button>
+                <button id="preset_2">n = 2</button>
+                <button id="preset_3">n = 3</button>
+                <button id="preset_4">n = 4</button>
+                <button id="preset_5">n = 5</button>
+                <button id="preset_6">n = 6</button>
+                <button id="preset_10">n = 10</button>
+                <button id="preset_12">n = 12</button>
+                <button id="preset_16">n = 16</button>
+                <button id="preset_17">n = 17</button>
+              </span>
+            </div>
+            <div>
+              <span>
+                Actions:
+                <button id="draw_button">Tracer</button>
+                <button id="reset_button">Reset</button>
+              </span>
+            </div>
+          </div>
+
+          <div class="msg"></div>
+
+          <canvas id="canvas"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <div class="copyright">© 2022-present Valentin Fleurit</div>
+
+    <script>
+      function detectMobile() {
+        if (window.innerWidth < 800) {
+          document.body.classList.add("mobile");
+        } else {
+          document.body.classList.remove("mobile");
+        }
+      }
+      detectMobile();
+      window.addEventListener("resize", detectMobile);
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let inlineMathElements = document.querySelectorAll("span.math");
+        inlineMathElements.forEach((element) => {
+          katex.render(element.textContent, element, {
+            throwOnError: false,
+            displayMode: false,
+          });
+        });
+        let displayModeMathElements = [
+          ...document.querySelectorAll("div.math"),
+          ...document.querySelectorAll("pre.math"),
+        ];
+        displayModeMathElements.forEach((element) => {
+          katex.render(element.textContent, element, {
+            throwOnError: false,
+            displayMode: true,
+          });
+        });
+      });
+    </script>
+    
+  </body>
+</html>
