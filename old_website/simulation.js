@@ -3,17 +3,6 @@
 const canvas_width = 800;
 const canvas_height = 600;
 
-// Setup canvas and turtle
-
-function setup_canvas(canvas, width, height) {
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext && canvas.getContext("2d");
-  ctx.translate(0.5, 0.5);
-  ctx.lineCap = "square";
-  return ctx;
-}
-
 let main_ctx = setup_canvas(
   document.getElementById("canvas"),
   canvas_width,
@@ -44,88 +33,6 @@ const presets = {
   preset_16: [16, 178.5, 234.5, 2, 1],
   preset_17: [17, 285, 385, 1, 1],
 };
-
-// Simulation
-
-function inv_seq(seq) {
-  return seq.map((v) => (v === 0 ? 1 : 0)).reverse();
-}
-
-const A0 = [];
-function A(n) {
-  return n > 0 ? [...inv_seq(A(n - 1)), 0, ...A(n - 1)] : A0;
-}
-
-DP2 = [1, 2];
-function DP(n) {
-  if (n > 2) {
-    [d1, d2] = DP(n - 2);
-    return [d1 * 2 + 1, d2 * 2 + 1];
-  } else return DP2;
-}
-
-DI1 = [1, 1];
-function DI(n) {
-  if (n > 1) {
-    [d1, d2] = DI(n - 2);
-    return n % 4 == 3 ? [d1 * 2, d2 * 2 + 1] : [d1 * 2 + 2, d2 * 2 + 1];
-  } else return DI1;
-}
-
-function D(n) {
-  return n % 2 == 0 ? DP(n) : DI(n);
-}
-
-// Functions (related to drawing and settings)
-
-function raw_draw(n, center_x, center_y, seg_len, seg_width, turtle) {
-  center_x = center_x * seg_len;
-  center_y = center_y * seg_len;
-
-  turtle
-    .set_color("rgba(220, 220, 230, 1)")
-    .set_width(seg_width * 2 - 1)
-    .move_to(center_x, center_y);
-
-  let angles = A(n - 1);
-  console.log(angles);
-
-  angles.forEach((a) => {
-    turtle.forward(seg_len);
-    if (a === 0) turtle.left(90);
-    else turtle.right(90);
-  });
-  turtle.forward(seg_len);
-  if (n === 1) turtle.left(90);
-  turtle.move_to(center_x, center_y);
-  angles.forEach((a) => {
-    turtle.forward(seg_len);
-    if (a === 0) turtle.left(90);
-    else turtle.right(90);
-  });
-  turtle.forward(seg_len);
-  turtle.move_to(center_x, center_y);
-  turtle.dot(1, "rgb(80, 80, 255)");
-}
-
-// Create non-interactive canvas that displays a sequence
-function lone_canvas(
-  canvas,
-  n,
-  offset_x,
-  offset_y,
-  width,
-  height,
-  seg_len,
-  seg_width
-) {
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext && canvas.getContext("2d");
-  ctx.translate(0.5, 0.5);
-  ctx.lineCap = "square";
-  raw_draw(n, offset_x, offset_y, seg_len, seg_width, create_turtle(ctx));
-}
 
 function draw_simulation(settings) {
   Object.entries(presets).forEach(([id, preset_settings]) =>
