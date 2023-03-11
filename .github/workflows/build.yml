@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: cd
-        run: cd website
+        run: cd website && ls
 
       - name: Install (npm ci)
         run: npm ci
