@@ -145,6 +145,7 @@ export type Settings = { [key: string]: any } & {
   showCenter?: boolean;
   showAngleTag?: boolean;
   showPrevSeq?: boolean;
+  direction?: 0 | 1 | 2 | 3;
 };
 
 export function rawDraw(
@@ -184,14 +185,14 @@ export function rawDraw(
       turtle.text(a.toString(), -7, 9);
     }
   }
-  let drawAngles = (a: number) => {
+  let drawAngles = (a: number, s?: boolean) => {
     turtle.forward(segLen);
-    if (showAngleTag) drawAngleTag(a);
+    if (showAngleTag) drawAngleTag(!s ? a : a ? 0 : 1);
     if (a === 0) turtle.left(90);
     else turtle.right(90);
   };
 
-  angles.forEach(drawAngles);
+  angles.forEach((a) => drawAngles(a));
 
   turtle.forward(segLen);
   if (n === 1) turtle.left(90);
@@ -199,7 +200,7 @@ export function rawDraw(
   if (showAngleTag) drawAngleTag(0);
 
   if (showPrevSeq) turtle.setColor("rgb(150, 150, 255)");
-  angles.forEach(drawAngles);
+  angles.forEach((a) => drawAngles(a, true));
 
   turtle.forward(segLen);
 
