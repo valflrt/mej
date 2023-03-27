@@ -55,6 +55,7 @@ const presets: { [key: string]: Settings } = {
     segLen: 40,
     segWidth: 1,
     showAngleTag: true,
+    orientation: 1,
   },
   preset_2: {
     n: 2,
@@ -128,7 +129,9 @@ const presets: { [key: string]: Settings } = {
 
 function drawSimulation(settings: Settings) {
   Object.entries(presets).forEach(([id, presetSettings]) =>
-    Object.entries(presetSettings).every(([k, v]) => v === settings[k])
+    Object.entries(presetSettings).every(
+      ([k, v]) => k === "orientation" || v === settings[k]
+    )
       ? document.getElementById(id)?.classList.add("active")
       : document.getElementById(id)?.classList.remove("active")
   );
@@ -240,7 +243,7 @@ document.getElementById("reset_button")!.addEventListener("click", init);
 Object.entries(presets).forEach(([id, settings]) =>
   document.getElementById(id)!.addEventListener("click", () => {
     setSettings(settings);
-    drawSimulation(getSettings());
+    drawSimulation({ ...settings, ...getSettings() });
   })
 );
 

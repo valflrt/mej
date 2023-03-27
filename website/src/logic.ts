@@ -145,7 +145,7 @@ export type Settings = { [key: string]: any } & {
   showCenter?: boolean;
   showAngleTag?: boolean;
   showPrevSeq?: boolean;
-  direction?: 0 | 1 | 2 | 3;
+  orientation?: 0 | 1 | 2 | 3;
 };
 
 export function rawDraw(
@@ -159,6 +159,7 @@ export function rawDraw(
     showAngleTag,
     showCenter,
     showPrevSeq,
+    orientation,
   }: Settings
 ) {
   centerX = centerX * segLen;
@@ -191,6 +192,8 @@ export function rawDraw(
     if (a === 0) turtle.left(90);
     else turtle.right(90);
   };
+
+  if (orientation) turtle.left(orientation * 90);
 
   angles.forEach((a) => drawAngles(a));
 
