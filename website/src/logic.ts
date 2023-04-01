@@ -207,6 +207,8 @@ export function rawDraw(
 
   turtle.forward(segLen);
 
+  turtle.dot(2, "rgb(90, 255, 90)");
+
   turtle.moveTo(centerX, centerY);
   if (showCenter !== false) turtle.dot(3, "rgb(255, 90, 90)");
 }
